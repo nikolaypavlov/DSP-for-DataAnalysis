@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DSP for Data Analysis</title>
+  <meta charset="utf-8">
+  <meta name="description" content="DSP for Data Analysis">
+  <meta name="author" content="Mykola Pavlov">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+    <link rel="stylesheet" href = "assets/css/ribbons.css">
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+    <!-- END LOGO SLIDE -->
+    
+
+    <!-- TITLE SLIDE -->
+    <!-- Should I move this to a Local Layout File? -->
+    <slide class="title-slide segue nobackground">
+      <hgroup class="auto-fadein">
+        <h1>DSP for Data Analysis</h1>
+        <h2>Brief introduction into digital signal processing</h2>
+        <p>Mykola Pavlov<br/>Founder at Biomech</p>
+      </hgroup>
+          </slide>
+
+    <!-- SLIDES -->
+      <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Topics</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li>What is DSP and where it can be applied?</li>
+<li>Linear systems</li>
+<li>Fourier analysis</li>
+<li>Filter design in R</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>What is Signal?</h2>
+  </hgroup>
+  <article>
+    <p>Anything that carries information is a signal</p>
+
+<p><img src="assets/img/signals.jpg" alt="Signals"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>What is DSP and where it can be applied?</h2>
+  </hgroup>
+  <article>
+    <p>The mathematics, the algorithms, and the techniques used to manipulate signals after they have been converted into a digital form.</p>
+
+<p><img src="assets/img/DSP-application.jpg" alt="Application of DSP"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Contineous and discrete</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li>Contineous f(t)</li>
+<li>Discrete (digital) f[t]</li>
+</ul>
+
+<p><img src="assets/img/sampled-signal.png" alt="Discrete signal"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Linear system</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/linear-system.png" alt="Linear system"></p>
+
+<p>Examples: Wave propagation, resistors, capacitors, inductors, amplifiers, filters, mechanical interaction of masses, springs, echoes, resonances, image blurring...</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Linear system properties: Homogenity</h2>
+  </hgroup>
+  <article>
+    <p>Amplitude change in the input results in an identical amplitude change in the output.</p>
+
+<p><img src="assets/img/homogenity.png" alt="Homogenity of signal"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Linear system properties: Additivity</h2>
+  </hgroup>
+  <article>
+    <p>Signals added at the input produce signals that are added at the output.</p>
+
+<p><img src="assets/img/additivity.png" alt="Additivity of signal"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Linear system properties: Shift invariance</h2>
+  </hgroup>
+  <article>
+    <p>Shift in the input signal causes an identical shift in the output signal.</p>
+
+<p><img src="assets/img/shift.png" alt="Shift invariance of signal"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Superposition strategy: divide-and-conquer</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/synthesis-decomposition.png" alt="Synthesis and decomposition"></p>
+
+<pre><code>Synthesis: 5 + 10 = 15
+Decomposition: 15 = 3 + 12 or 1 + 5 + 9 or ... 
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Superposition strategy: divide-and-conquer</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/superposition.png" alt="Superposition"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Superposition strategy: divide-and-conquer</h2>
+  </hgroup>
+  <article>
+    <pre><code>Divide-and-conquer: 1027 * 4 = 1000 * 4 + 20 * 4 + 7 * 4
+</code></pre>
+
+<h3>Intuition: No more complex signals! All we need to know is how simple signals are modified by a system.</h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Two decompositions: Impulse and Fourier</h2>
+  </hgroup>
+  <article>
+    <h3>Impulse decomposition</h3>
+
+<p><img src="assets/img/impulse-decomposition.png" alt="Impulse decomposition"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Delta function and Impulse Response</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/impulse-responce.png" alt="Impulse decomposition"></p>
+
+<p>Same as filter kernel, convolution kernel, kernel, point spread function (image processing).</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Let&#39;s summarize</h2>
+  </hgroup>
+  <article>
+    <ol>
+<li>Input signal can be decomposed into a set of impulses</li>
+<li>Each impulse can be viewed as a scaled and shifted delta function</li>
+<li>Output signal can be found by adding these scaled and shifted impulse responses
+(This operations is known as Convolution).</li>
+</ol>
+
+<p>Intuition: If we know impulse response, then we can calculate the output for any possible input signal!</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Fourier decomposition</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/fourier.jpg" alt="Fourier decomposition"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Fourier decomposition</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/fourier-transform.gif" alt="Fourier decomposition animated"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>DFT, IDFT, FFT</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">signal &lt;- rnorm(100)
+fourier_transform &lt;- fft(signal)
+
+Re(fourier_transform)[1:5]
+</code></pre>
+
+<pre><code>## [1] -4.874 -3.616 -9.085  5.431 -2.516
+</code></pre>
+
+<pre><code class="r">Im(fourier_transform)[1:5]
+</code></pre>
+
+<pre><code>## [1]  0.0000 -0.9916 10.2477 -1.5758 -0.3789
+</code></pre>
+
+<ul>
+<li>Re[] - Cos, Index - Freq, Value - Amplitude</li>
+<li>Im[] - Sin, Index - Freq, Value - Amplitude</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Rectangular vs Polar</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/polar.png" alt="Fourier decomposition animated"></p>
+
+<pre><code class="r">Mod(fourier_transform)[1:5]
+</code></pre>
+
+<pre><code>## [1]  4.874  3.749 13.695  5.655  2.545
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Furier analysis</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/chemcam-spectrum.jpg" alt="ChemCam"></p>
+
+<h3>Intuition: How much information/signal is presented on a given frequency</h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Filter design</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/filt.png" alt="Filter design"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Filter types</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/filt-types.png" alt="Filter types"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>Filter types</h2>
+  </hgroup>
+  <article>
+    <p><img src="assets/img/filt-types2.png" alt="Filter types"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <h2>Window Sinc Filter</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">library(signal)
+t &lt;- as.vector(as.matrix(read.csv(&quot;data/data.csv&quot;, row.names = NULL, header = F)))  # 20 Hz 
+plot.ts(t, ylab = &quot;g&quot;, main = &quot;User Acceleration&quot;)
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-4.png" alt="plot of chunk unnamed-chunk-4"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <h2>Window Sinc Filter</h2>
+  </hgroup>
+  <article>
+    <pre><code class="r">filt &lt;- fir1(15, 0.15, type = &quot;low&quot;)  # 3 Hz low-pass filter
+z &lt;- filter(filt, t)  # apply filter
+plot(z, col = &quot;red&quot;, lwd = 3, type = &quot;l&quot;, ylab = &quot;g&quot;, main = &quot;User Acceleration&quot;)
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-5.png" alt="plot of chunk unnamed-chunk-5"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-25" style="background:;">
+  <hgroup>
+    <h2>Credits</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li><a href="http://dspguide.com">Steven W. Smith, The Scientist and Engineer&#39;s Guide to Digital Signal Processing</a></li>
+<li>Fourier decomposition from <a href="http://commons.wikimedia.org/wiki/File:Fourier_series_and_transform.gif">Wikimedia Commons</a></li>
+<li>ChemCam image from <a href="http://www.nasa.gov">NASA</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>Questions?</h2>
+  </hgroup>
+  <article>
+    <h3>Nikolay Pavlov, Founder at Biomech</h3>
+
+<ul>
+<li>E-mail: <a href="mailto:me@nikolaypavlov.com">me@nikolaypavlov.com</a> </li>
+<li>Linkedin: <a href="http://linkedin.com/in/nikolaypavlov">http://linkedin.com/in/nikolaypavlov</a></li>
+<li>Facebook: <a href="http://www.facebook.com/pav.nikolay">http://www.facebook.com/pav.nikolay</a></li>
+<li>Twitter: @nikolaypavlov</li>
+<li>Github: <a href="https://github.com/nikolaypavlov">https://github.com/nikolaypavlov</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+
+  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+<!-- Grab CDN jQuery, fall back to local if offline -->
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+<script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery-1.7.min.js"><\/script>')</script>
+<!-- Load Javascripts for Widgets -->
+<!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+</html>
